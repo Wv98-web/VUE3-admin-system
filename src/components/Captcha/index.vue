@@ -58,7 +58,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .nc-container .nc_wrapper {
 	.nc_scale {
 		height: 32px;

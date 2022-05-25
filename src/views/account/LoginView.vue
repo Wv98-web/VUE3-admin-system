@@ -33,7 +33,7 @@
 
 				<div class="color-white tc fs-12">
 					<a href="#" class="color-white">忘记密码</a> |
-					<a href="#" class="color-white">登录</a>
+					<router-link to="/register" class="color-white">注册</router-link>
 				</div>
 			</a-form>
 		</div>
