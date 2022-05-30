@@ -7,55 +7,39 @@
 		theme="dark"
 		:inline-collapsed="collapsed"
 	>
-		<a-menu-item key="1">
-			<template #icon>
-				<!-- <PieChartOutlined /> -->
+		<template v-for="item in routers">
+			<template v-if="!item.hidden">
+				<a-menu-item :key="item.path" v-if="!item.children">
+					<span>{{ item.meta && item.meta.title }}</span>
+				</a-menu-item>
+				<a-sub-menu :key="item.path" v-else>
+					<template #title>{{ item.meta && item.meta.title }}</template>
+					<template v-if="item.children.length">
+						<a-menu-item :key="child.path" v-for="child in item.children">
+							<span>{{ child.meta && child.meta.title }}</span>
+						</a-menu-item>
+					</template>
+				</a-sub-menu>
 			</template>
-			<span>Option 1</span>
-		</a-menu-item>
-		<a-menu-item key="2">
-			<template #icon>
-				<!-- <DesktopOutlined /> -->
-			</template>
-			<span>Option 2</span>
-		</a-menu-item>
-		<a-menu-item key="3">
-			<template #icon>
-				<!-- <InboxOutlined /> -->
-			</template>
-			<span>Option 3</span>
-		</a-menu-item>
-		<a-sub-menu key="sub1">
-			<template #icon>
-				<!-- <MailOutlined /> -->
-			</template>
-			<template #title>Navigation One</template>
-			<a-menu-item key="5">Option 5</a-menu-item>
-			<a-menu-item key="6">Option 6</a-menu-item>
-			<a-menu-item key="7">Option 7</a-menu-item>
-			<a-menu-item key="8">Option 8</a-menu-item>
-		</a-sub-menu>
-		<a-sub-menu key="sub2">
-			<template #icon>
-				<!-- <AppstoreOutlined /> -->
-			</template>
-			<template #title>Navigation Two</template>
-			<a-menu-item key="9">Option 9</a-menu-item>
-			<a-menu-item key="10">Option 10</a-menu-item>
-		</a-sub-menu>
+		</template>
 	</a-menu>
 </template>
 
 <script>
 import { defineComponent, reactive, toRefs, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
 export default {
 	name: "LayoutAside",
 	setup() {
+		const { options } = useRouter();
+		const routers = options.routes;
+
 		const state = reactive({
 			collapsed: false,
-			selectedKeys: ["1"],
-			openKeys: ["sub1"],
-			preOpenKeys: ["sub1"]
+			selectedKeys: ["/index"],
+			openKeys: ["/admin"],
+			preOpenKeys: ["/admin"]
 		});
 		watch(
 			() => state.openKeys,
@@ -69,7 +53,7 @@ export default {
 			state.openKeys = state.collapsed ? [] : state.preOpenKeys;
 		};
 
-		return { ...toRefs(state), toggleCollapsed };
+		return { ...toRefs(state), toggleCollapsed, routers };
 	}
 };
 </script>

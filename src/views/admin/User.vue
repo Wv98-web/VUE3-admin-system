@@ -1,10 +1,12 @@
 <template>
-	<router-view />
+	<div>用户管理</div>
 </template>
 
 <script>
 export default {
-	name: "LayoutMain"
+	setup() {
+		return {};
+	}
 };
 </script>
 
