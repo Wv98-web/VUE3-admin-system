@@ -6,17 +6,23 @@
 		mode="inline"
 		theme="dark"
 		:inline-collapsed="collapsed"
+		@click="selectMenu"
+		@openChange="openMenu"
 	>
 		<template v-for="item in routers">
 			<template v-if="!item.hidden">
 				<a-menu-item :key="item.path" v-if="!item.children">
-					<span>{{ item.meta && item.meta.title }}</span>
+					<router-link :to="item.path">
+						{{ item.meta && item.meta.title }}
+					</router-link>
 				</a-menu-item>
 				<a-sub-menu :key="item.path" v-else>
 					<template #title>{{ item.meta && item.meta.title }}</template>
 					<template v-if="item.children.length">
 						<a-menu-item :key="child.path" v-for="child in item.children">
-							<span>{{ child.meta && child.meta.title }}</span>
+							<router-link :to="child.path">
+								{{ child.meta && child.meta.title }}
+							</router-link>
 						</a-menu-item>
 					</template>
 				</a-sub-menu>
@@ -29,7 +35,7 @@
 import { defineComponent, reactive, toRefs, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-export default {
+export default defineComponent({
 	name: "LayoutAside",
 	setup() {
 		const { options } = useRouter();
@@ -37,8 +43,12 @@ export default {
 
 		const state = reactive({
 			collapsed: false,
-			selectedKeys: ["/index"],
-			openKeys: ["/admin"],
+			selectedKeys: localStorage.getItem("selectedKeys")
+				? [localStorage.getItem("selectedKeys")]
+				: ["/index"],
+			openKeys: localStorage.getItem("openKeys")
+				? [localStorage.getItem("openKeys")]
+				: [],
 			preOpenKeys: ["/admin"]
 		});
 		watch(
@@ -53,9 +63,19 @@ export default {
 			state.openKeys = state.collapsed ? [] : state.preOpenKeys;
 		};
 
-		return { ...toRefs(state), toggleCollapsed, routers };
+		const selectMenu = ({ item, key, keyPath }) => {
+			state.selectedKeys = [key];
+			localStorage.setItem("selectedKeys", key);
+		};
+
+		const openMenu = (openKeys) => {
+			state.openKeys = openKeys;
+			localStorage.setItem("openKeys", openKeys);
+		};
+
+		return { ...toRefs(state), toggleCollapsed, routers, selectMenu, openMenu };
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>
