@@ -67,7 +67,7 @@
 <script>
 import { defineComponent, onMounted, reactive, ref } from "vue";
 import Captcha from "@/components/Captcha";
-import { checkPhone } from "@/utils/verification";
+import { checkPhone, checkPassword, checkCode } from "@/utils/verification";
 
 export default defineComponent({
 	name: "LoginView",
@@ -83,7 +83,7 @@ export default defineComponent({
 		});
 
 		let validateUsername = async (_rule, value) => {
-			if (value === "") {
+			if (!value) {
 				return Promise.reject("请输入用户名");
 			} else {
 				if (!checkPhone(value)) {
@@ -95,9 +95,13 @@ export default defineComponent({
 		};
 
 		let validatePass = async (_rule, value) => {
-			if (value === "") {
+			if (!value) {
 				return Promise.reject("请输入密码");
 			} else {
+				if (!checkPassword(value)) {
+					return Promise.reject("请输入6-20位的，数字+英文");
+				}
+
 				if (formState.checkPass !== "") {
 					formRef.value.validateFields("checkPass");
 				}
@@ -107,7 +111,7 @@ export default defineComponent({
 		};
 
 		let validatePass2 = async (_rule, value) => {
-			if (value === "") {
+			if (!value) {
 				return Promise.reject("请再次输入密码");
 			} else if (value !== formState.password) {
 				return Promise.reject("两次输入密码不同!");
@@ -116,8 +120,22 @@ export default defineComponent({
 			}
 		};
 
+		let validateCode = async (_rule, value) => {
+			if (!value) {
+				return Promise.reject("请输入验证码");
+			} else {
+				if (!checkCode(value)) {
+					return Promise.reject("请输入正确的验证码");
+				}
+
+				return Promise.resolve();
+			}
+		};
+
 		const rules = {
-			username: [{ required: true, validator: validateUsername }],
+			username: [
+				{ required: true, validator: validateUsername, trigger: "change" }
+			],
 			password: [
 				{
 					required: true,
@@ -127,6 +145,7 @@ export default defineComponent({
 			],
 			checkPass: [
 				{
+					required: true,
 					validator: validatePass2,
 					trigger: "change"
 				}
@@ -134,7 +153,8 @@ export default defineComponent({
 			captcha: [
 				{
 					required: true,
-					message: "请输入验证码"
+					validator: validateCode,
+					trigger: "change"
 				}
 			]
 		};
