@@ -34,7 +34,7 @@
 
 				<a-form-item name="captcha">
 					<label class="color-white">验证码</label>
-					<a-row>
+					<a-row :gutter="16" align="middle">
 						<a-col :span="14">
 							<a-input
 								size="large"
@@ -42,9 +42,17 @@
 								autocomplete="off"
 							/>
 						</a-col>
-						<a-col :span="10"
-							><a-button type="danger" block>获取验证码</a-button></a-col
-						>
+						<a-col :span="10">
+							<a-button
+								type="primary"
+								block
+								:loading="button_loading"
+								:disabled="button_disable"
+								@click="getCode"
+							>
+								{{ button_text }}
+							</a-button>
+						</a-col>
 					</a-row>
 				</a-form-item>
 
@@ -65,13 +73,17 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, reactive, ref } from "vue";
+import { message } from "ant-design-vue";
+import { defineComponent, onMounted, reactive, ref, toRefs } from "vue";
 import Captcha from "@/components/Captcha";
 import { checkPhone, checkPassword, checkCode } from "@/utils/verification";
 
 export default defineComponent({
 	name: "LoginView",
 	components: { Captcha },
+	data() {
+		return {};
+	},
 	setup(props) {
 		const formRef = ref();
 
@@ -81,6 +93,15 @@ export default defineComponent({
 			checkPass: "",
 			captcha: ""
 		});
+
+		const dataItem = reactive({
+			button_text: "获取验证码",
+			button_loading: false,
+			button_disable: false,
+			sec: 60,
+			timer: null
+		});
+		const data = toRefs(dataItem);
 
 		let validateUsername = async (_rule, value) => {
 			if (!value) {
@@ -175,16 +196,37 @@ export default defineComponent({
 			console.log(args);
 		};
 
+		const getCode = () => {
+			if (!formState.username) {
+				message.error("用户名不能为空");
+				return false;
+			}
+
+			dataItem.timer && clearInterval(dataItem.timer);
+			dataItem.timer = setInterval(() => {
+				const s = dataItem.sec--;
+				dataItem.button_text = `${s}秒`;
+				dataItem.button_disable = true;
+				if (s <= 0) {
+					clearInterval(dataItem.timer);
+					dataItem.button_text = `重新获取`;
+					dataItem.button_disable = false;
+				}
+			}, 1000);
+		};
+
 		onMounted(() => {});
 
 		return {
+			...data,
 			formState,
 			formRef,
 			rules,
 			handleFinish,
 			handleFinishFailed,
 			resetForm,
-			handleValidate
+			handleValidate,
+			getCode
 		};
 	}
 });
