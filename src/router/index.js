@@ -13,6 +13,11 @@ const routes = [
 		component: () => import("../views/account/Register.vue")
 	},
 	{
+		path: "/forget",
+		name: "Forget",
+		component: () => import("../views/account/Forget.vue")
+	},
+	{
 		path: "/home",
 		name: "home",
 		component: HomeView
