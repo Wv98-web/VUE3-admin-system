@@ -1,5 +1,7 @@
 <template>
-	<div class="logo" />
+	<div class="logo">
+		<img :src="logo" alt="logo" />
+	</div>
 	<a-menu
 		v-model:openKeys="openKeys"
 		v-model:selectedKeys="selectedKeys"
@@ -13,14 +15,31 @@
 			<template v-if="!item.hidden">
 				<a-menu-item :key="item.path" v-if="!item.children">
 					<router-link :to="item.path">
+						<svg-icon
+							v-if="item.meta && item.meta.icon"
+							:iconName="item.meta && item.meta.icon"
+							className="aside-svg"
+						></svg-icon>
 						{{ item.meta && item.meta.title }}
 					</router-link>
 				</a-menu-item>
 				<a-sub-menu :key="item.path" v-else>
-					<template #title>{{ item.meta && item.meta.title }}</template>
+					<template #title>
+						<svg-icon
+							v-if="item.meta && item.meta.icon"
+							:iconName="item.meta && item.meta.icon"
+							className="aside-svg"
+						></svg-icon>
+						{{ item.meta && item.meta.title }}</template
+					>
 					<template v-if="item.children.length">
 						<a-menu-item :key="child.path" v-for="child in item.children">
 							<router-link :to="child.path">
+								<svg-icon
+									v-if="child.meta && child.meta.icon"
+									:iconName="child.meta && child.meta.icon"
+									className="aside-svg"
+								></svg-icon>
 								{{ child.meta && child.meta.title }}
 							</router-link>
 						</a-menu-item>
@@ -49,7 +68,8 @@ export default defineComponent({
 			openKeys: localStorage.getItem("openKeys")
 				? [localStorage.getItem("openKeys")]
 				: [],
-			preOpenKeys: ["/admin"]
+			preOpenKeys: ["/admin"],
+			logo: require("@/assets/goutou.png")
 		});
 		watch(
 			() => state.openKeys,

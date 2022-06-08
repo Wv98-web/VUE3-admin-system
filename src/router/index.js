@@ -1,5 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
+const Layout = () => import("../views/layout/index.vue");
+
 const routes = [
 	{
 		path: "/login",
@@ -29,26 +31,33 @@ const routes = [
 		component: () => import("../views/account/Forget.vue")
 	},
 	{
+		path: '/',
+		hidden: true
+	},
+	{
 		path: "/index",
 		name: "Index",
 		meta: {
-			title: "首页"
+			title: "首页",
+			icon: "logo"
 		},
-		component: () => import("../views/layout/Index.vue")
+		component: Layout
 	},
 	{
 		path: "/admin",
 		name: "Admin",
 		meta: {
-			title: "管理"
+			title: "管理",
+			icon: "logo"
 		},
-		component: () => import("../views/layout/Index.vue"),
+		component: Layout,
 		children: [
 			{
 				path: "/role",
 				name: "Role",
 				meta: {
-					title: "角色管理"
+					title: "角色管理",
+					icon: "logos"
 				},
 				component: () => import("../views/admin/Role.vue")
 			},
@@ -56,7 +65,8 @@ const routes = [
 				path: "/user",
 				name: "User",
 				meta: {
-					title: "用户管理"
+					title: "用户管理",
+					icon: "logos"
 				},
 				component: () => import("../views/admin/User.vue")
 			}
@@ -66,9 +76,21 @@ const routes = [
 		path: "/news",
 		name: "News",
 		meta: {
-			title: "信息管理"
+			title: "信息管理",
+			icon: "logo"
 		},
-		component: () => import("../views/news/Index.vue")
+		component: Layout,
+		children: [
+			{
+				path: "/message",
+				name: "Message",
+				meta: {
+					title: "信息管理",
+					icon: "logos"
+				},
+				component: () => import("../views/news/Index.vue")
+			}
+		]
 	}
 ];
 

@@ -1,5 +1,9 @@
 <template>
 	<div id="header">
+		<a-button type="primary" style="margin-bottom: 16px" @click="handlerButton">
+			<MenuUnfoldOutlined v-if="collapsed" />
+			<MenuFoldOutlined v-else />
+		</a-button>
 		<div class="header-menu">
 			<a-dropdown>
 				<a class="ant-dropdown-link" @click.prevent>
@@ -39,14 +43,19 @@
 </template>
 
 <script>
-import { reactive } from "vue";
+import { reactive, getCurrentInstance } from "vue";
 import { useI18n } from "vue-i18n";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons-vue";
 
 export default {
 	name: "LayoutHeader",
+	components: {
+		MenuFoldOutlined,
+		MenuUnfoldOutlined
+	},
 	setup() {
 		const { locale } = useI18n({ useScope: "global" });
-		console.log(locale, "locale");
+		const { emit } = getCurrentInstance();
 
 		const data = reactive({
 			lang: [
@@ -64,13 +73,17 @@ export default {
 
 		const toggleLang = (lang) => {
 			locale.value = lang;
-			console.log(123);
 			data.lang_current = lang;
+		};
+
+		const handlerButton = () => {
+			emit("handlerCollapsed", { collapsed: true });
 		};
 
 		return {
 			data,
-			toggleLang
+			toggleLang,
+			handlerButton
 		};
 	}
 };

@@ -1,11 +1,16 @@
 <template>
 	<a-layout id="layout-main">
-		<a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
+		<a-layout-sider
+			v-model:collapsed="collapsed"
+			:trigger="null"
+			collapsible
+			width="250"
+		>
 			<LayoutAside />
 		</a-layout-sider>
 		<a-layout>
 			<a-layout-header style="background: #fff; padding: 0">
-				<LayoutHeader />
+				<LayoutHeader @handlerCollapsed="handlerCollapsed" />
 			</a-layout-header>
 			<a-layout-content
 				:style="{
@@ -29,7 +34,7 @@ import {
 	MenuUnfoldOutlined,
 	MenuFoldOutlined
 } from "@ant-design/icons-vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent, reactive, ref, toRefs } from "vue";
 import LayoutAside from "./components/Aside.vue";
 import LayoutHeader from "./components/Header.vue";
 import LayoutMain from "./components/Main.vue";
@@ -47,9 +52,18 @@ export default defineComponent({
 		MenuFoldOutlined
 	},
 	setup() {
-		return {
+		const data = reactive({
 			selectedKeys: ref(["1"]),
 			collapsed: ref(false)
+		});
+
+		const handlerCollapsed = (value) => {
+			data.collapsed = !data.collapsed;
+		};
+
+		return {
+			...toRefs(data),
+			handlerCollapsed
 		};
 	}
 });
@@ -76,6 +90,12 @@ export default defineComponent({
 	height: 32px;
 	background: rgba(255, 255, 255, 0.3);
 	margin: 16px;
+	border-bottom: 1px solid #000000;
+	img {
+		display: block;
+		height: 100%;
+		margin: 0 auto;
+	}
 }
 
 .site-layout .site-layout-background {
