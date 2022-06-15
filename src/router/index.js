@@ -31,7 +31,7 @@ const routes = [
 		component: () => import("../views/account/Forget.vue")
 	},
 	{
-		path: '/',
+		path: "/",
 		hidden: true
 	},
 	{
@@ -59,7 +59,27 @@ const routes = [
 					title: "角色管理",
 					icon: "logos"
 				},
-				component: () => import("../views/admin/Role.vue")
+				component: () => import("../views/admin/Role.vue"),
+				children: [
+					{
+						path: "/aaa",
+						name: "aaa",
+						meta: {
+							title: "角色管理",
+							icon: "logos"
+						},
+						component: () => import("../views/admin/Role.vue")
+					},
+					{
+						path: "/bbb",
+						name: "bbb",
+						meta: {
+							title: "用户管理",
+							icon: "logos"
+						},
+						component: () => import("../views/admin/User.vue")
+					}
+				]
 			},
 			{
 				path: "/user",

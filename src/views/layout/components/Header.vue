@@ -1,8 +1,8 @@
 <template>
 	<div id="header">
 		<a-button type="primary" style="margin-bottom: 16px" @click="handlerButton">
-			<MenuUnfoldOutlined v-if="collapsed" />
-			<MenuFoldOutlined v-else />
+			<MenuFoldOutlined v-if="!collapsed" />
+			<MenuUnfoldOutlined v-else />
 		</a-button>
 		<div class="header-menu">
 			<a-dropdown>
@@ -53,6 +53,12 @@ export default {
 		MenuFoldOutlined,
 		MenuUnfoldOutlined
 	},
+	props: {
+		collapsed: {
+			type: Boolean,
+			default: false
+		}
+	},
 	setup() {
 		const { locale } = useI18n({ useScope: "global" });
 		const { emit } = getCurrentInstance();
@@ -77,7 +83,7 @@ export default {
 		};
 
 		const handlerButton = () => {
-			emit("handlerCollapsed", { collapsed: true });
+			emit("handlerCollapsed");
 		};
 
 		return {

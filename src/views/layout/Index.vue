@@ -6,11 +6,14 @@
 			collapsible
 			width="250"
 		>
-			<LayoutAside />
+			<LayoutAside :collapsed="collapsed" />
 		</a-layout-sider>
 		<a-layout>
 			<a-layout-header style="background: #fff; padding: 0">
-				<LayoutHeader @handlerCollapsed="handlerCollapsed" />
+				<LayoutHeader
+					@handlerCollapsed="handlerCollapsed"
+					:collapsed="collapsed"
+				/>
 			</a-layout-header>
 			<a-layout-content
 				:style="{
@@ -54,11 +57,13 @@ export default defineComponent({
 	setup() {
 		const data = reactive({
 			selectedKeys: ref(["1"]),
-			collapsed: ref(false)
+			collapsed: ref(JSON.parse(localStorage.getItem("callapsed")))
 		});
 
 		const handlerCollapsed = (value) => {
-			data.collapsed = !data.collapsed;
+			let bool = !data.collapsed;
+			data.collapsed = bool;
+			localStorage.setItem("callapsed", bool);
 		};
 
 		return {

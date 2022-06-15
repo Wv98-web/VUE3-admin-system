@@ -1,21 +1,12 @@
 <template>
-	<!-- 显示外部传入的svg -->
-	<div
-		v-if="isExternal"
-		:style="styleExternalIcon"
-		class="svg-external-icon svg-icon"
-		:class="className"
-	/>
 	<!-- 显示项目内部的svg -->
-	<svg v-else class="svg-icon" :class="className" aria-hidden="true">
+	<svg class="svg-icon" :class="className" aria-hidden="true">
 		<use :xlink:href="'#icon-' + iconName"></use>
 		<!-- <use :xlink:href="iconName" /> -->
 	</svg>
 </template>
 
 <script>
-import { isExternal } from "../../utils/verification";
-
 export default {
 	name: "SvgIcon",
 	props: {
@@ -29,29 +20,6 @@ export default {
 			default: ""
 		}
 	}
-	// computed: {
-	// 	/**
-	// 	 * 判断是否为外部图标
-	// 	 */
-	// 	isExternal() {
-	// 		return isExternal(this.iconName);
-	// 	},
-	// 	/**
-	// 	 * 外部图标样式
-	// 	 */
-	// 	styleExternalIcon() {
-	// 		return {
-	// 			mask: `url(${this.iconName}) no-repeat 50% 50%`,
-	// 			"-webkit-mask": `url(${this.iconName}) no-repeat 50% 50%`
-	// 		};
-	// 	},
-	// 	/**
-	// 	 * 项目内图标
-	// 	 */
-	// 	iconName() {
-	// 		return `#icon-${this.iconName}`;
-	// 	}
-	// }
 };
 </script>
 
