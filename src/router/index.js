@@ -76,7 +76,7 @@ const routes = [
 						path: "/aaa",
 						name: "aaa",
 						meta: {
-							title: "角色管理",
+							title: "aaa",
 							icon: "logos"
 						},
 						component: () => import("../views/admin/Role.vue")
@@ -85,7 +85,7 @@ const routes = [
 						path: "/bbb",
 						name: "bbb",
 						meta: {
-							title: "用户管理",
+							title: "bbb",
 							icon: "logos"
 						},
 						component: () => import("../views/admin/User.vue")

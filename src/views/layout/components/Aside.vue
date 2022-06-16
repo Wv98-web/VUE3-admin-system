@@ -32,34 +32,7 @@
 				</a-menu-item>
 
 				<!-- 二级菜单 -->
-				<a-sub-menu :key="item.path" v-else>
-					<template #icon>
-						<svg-icon
-							v-if="item.meta && item.meta.icon"
-							:iconName="item.meta && item.meta.icon"
-							className="aside-svg"
-						></svg-icon>
-					</template>
-					<template #title>
-						{{ item.meta && item.meta.title }}
-					</template>
-					<template v-if="item.children.length">
-						<template :key="child.path" v-for="child in item.children">
-							<a-menu-item :key="child.path" v-if="!child.hidden">
-								<template #icon>
-									<svg-icon
-										v-if="child.meta && child.meta.icon"
-										:iconName="child.meta && child.meta.icon"
-										className="aside-svg"
-									></svg-icon>
-								</template>
-								<router-link :to="child.path">
-									{{ child.meta && child.meta.title }}
-								</router-link>
-							</a-menu-item>
-						</template>
-					</template>
-				</a-sub-menu>
+				<Menu v-else :key="item.path" :menu="item" />
 			</template>
 		</template>
 	</a-menu>
@@ -68,6 +41,7 @@
 <script>
 import { defineComponent, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
+import Menu from "./menu.vue";
 
 export default defineComponent({
 	name: "LayoutAside",
@@ -77,6 +51,7 @@ export default defineComponent({
 			default: false
 		}
 	},
+	components: { Menu },
 	setup() {
 		const { options } = useRouter();
 		const routers = options.routes;
