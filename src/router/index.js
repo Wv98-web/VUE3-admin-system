@@ -41,7 +41,18 @@ const routes = [
 			title: "首页",
 			icon: "logo"
 		},
-		component: Layout
+		component: Layout,
+		children: [
+			{
+				path: "/index",
+				name: "Index",
+				meta: {
+					title: "首页",
+					icon: "logo"
+				},
+				component: () => import("../views/home/HomeView.vue")
+			}
+		]
 	},
 	{
 		path: "/admin",
@@ -89,6 +100,16 @@ const routes = [
 					icon: "logos"
 				},
 				component: () => import("../views/admin/User.vue")
+			},
+			{
+				path: "/user",
+				name: "User",
+				hidden: true,
+				meta: {
+					title: "用户管理",
+					icon: "logos"
+				},
+				component: () => import("../views/admin/User.vue")
 			}
 		]
 	},
@@ -102,8 +123,8 @@ const routes = [
 		component: Layout,
 		children: [
 			{
-				path: "/message",
-				name: "Message",
+				path: "/news",
+				name: "News",
 				meta: {
 					title: "信息管理",
 					icon: "logos"
