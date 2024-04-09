@@ -55,6 +55,35 @@ const routes = [
 		]
 	},
 	{
+		path: "/lesson",
+		name: "Lesson",
+		meta: {
+			title: "课程学习",
+			icon: "logo"
+		},
+		component: Layout,
+		children: [
+			{
+				path: "/api",
+				name: "api",
+				meta: {
+					title: "api",
+					icon: "logo"
+				},
+				component: () => import("../views/lesson/api.vue")
+			},
+			{
+				path: "/demo",
+				name: "demo",
+				meta: {
+					title: "demo",
+					icon: "logo"
+				},
+				component: () => import("../views/lesson/demo.vue")
+			}
+		]
+	},
+	{
 		path: "/admin",
 		name: "Admin",
 		meta: {
